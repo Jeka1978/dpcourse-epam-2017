@@ -13,7 +13,7 @@ public class InjectRandomIntTest {
         Elf elf = factory.createObject(Elf.class);
         System.out.println("elf = " + elf);
         Assert.assertTrue(elf.getPower()>0);
-        Assert.assertTrue(elf.getPower()>0);
-        Assert.assertTrue(elf.getPower()>0);
+        Assert.assertTrue(elf.getDexterity()>0);
+        Assert.assertTrue(elf.getHp()>0);
     }
 }
