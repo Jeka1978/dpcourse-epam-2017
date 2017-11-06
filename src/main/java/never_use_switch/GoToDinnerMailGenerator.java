@@ -1,6 +1,8 @@
 package never_use_switch;
 
-@MailCode(3)
+import org.springframework.stereotype.Component;
+
+@Component("3")
 public class GoToDinnerMailGenerator implements MailGenerator {
     @Override
     public String generateHtml(MailInfo mailInfo) {
