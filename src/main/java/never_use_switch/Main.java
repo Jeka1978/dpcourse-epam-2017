@@ -10,9 +10,13 @@ public class Main {
         DataFactory dataFactory = new DataFactory();
         while (true) {
             String name = dataFactory.getName();
-            int i = dataFactory.getNumberBetween(0, 2) + 1;
+            int i = dataFactory.getNumberBetween(0, 3) + 1;
             MailInfo mailInfo = new MailInfo(new Client(name), i);
-            mailSender.sendMail(mailInfo);
+            try {
+                mailSender.sendMail(mailInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Thread.sleep(1000);
         }
     }
