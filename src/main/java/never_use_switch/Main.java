@@ -3,6 +3,7 @@ package never_use_switch;
 import lombok.SneakyThrows;
 import org.fluttercode.datafactory.impl.DataFactory;
 
+
 public class Main {
     @SneakyThrows
     public static void main(String[] args) {
