@@ -17,6 +17,7 @@ public class ObjectFactory {
     private Reflections scanner = new Reflections("mySpring");
 
     private List<ObjectConfigurator> configurators = new ArrayList<>();
+    private List<ProxyConfigurator> proxyConfigurators = new ArrayList<>();
 
     public static ObjectFactory getInstance() {
         return ourInstance;
@@ -30,6 +31,12 @@ public class ObjectFactory {
                 configurators.add(aClass.newInstance());
             }
         }
+        Set<Class<? extends ProxyConfigurator>> set = scanner.getSubTypesOf(ProxyConfigurator.class);
+        for (Class<? extends ProxyConfigurator> aClass : set) {
+            if (!Modifier.isAbstract(aClass.getModifiers())) {
+                proxyConfigurators.add(aClass.newInstance());
+            }
+        }
     }
 
 
@@ -39,25 +46,16 @@ public class ObjectFactory {
         T t = type.newInstance();
         configure(t);
         invokeInitMethod(type, t);
+        t = wrapWithProxy(type, t);
 
-        if (type.isAnnotationPresent(Benchmark.class)) {
-            return (T) Proxy.newProxyInstance(type.getClassLoader(), type.getInterfaces(), new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    System.out.println("************Benchmark*********");
-                    System.out.println(method.getName()+" started");
-                    long start = System.nanoTime();
-                    Object retVal = method.invoke(t, args);
-                    long end = System.nanoTime();
-                    System.out.println(end-start);
-                    System.out.println(method.getName()+" finished");
-                    System.out.println("************Benchmark*********");
-                    return retVal;
-                }
-            });
+
+        return t;
+    }
+
+    private <T> T wrapWithProxy(Class<T> type, T t) {
+        for (ProxyConfigurator proxyConfigurator : proxyConfigurators) {
+            t = (T) proxyConfigurator.wrapWithProxy(t, type);
         }
-
-
         return t;
     }
 
