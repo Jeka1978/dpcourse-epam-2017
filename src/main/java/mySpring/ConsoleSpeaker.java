@@ -3,8 +3,8 @@ package mySpring;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-@Builder
 @AllArgsConstructor
+@Benchmark
 public class ConsoleSpeaker implements Speaker {
     @Override
     public void speak(String message) {
