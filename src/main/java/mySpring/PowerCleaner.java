@@ -9,6 +9,5 @@ public class PowerCleaner implements Cleaner {
         for (int i = 0; i < repeat; i++) {
             System.out.println("FFFFFfffffsssssssssssssssssss");
         }
-        long end = System.nanoTime();
     }
 }
